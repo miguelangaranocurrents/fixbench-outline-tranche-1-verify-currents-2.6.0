@@ -81,6 +81,8 @@ jobs:
         run: ./node_modules/.bin/playwright test
         env:
           CI: "true"
+          CURRENTS_RECORD_KEY: ${{ secrets.CURRENTS_RECORD_KEY }}
+          CURRENTS_PROJECT_ID: ${{ secrets.CURRENTS_PROJECT_ID }}
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
@@ -100,4 +102,12 @@ jobs:
         with:
           name: test-results
           path: e2e/test-results.json
+          retention-days: 30
+
+      - name: Upload Currents report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: currents
+          path: e2e/currents-report.json
           retention-days: 30

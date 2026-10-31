@@ -1,4 +1,6 @@
+import { currentsReporter } from "@currents/playwright";
 import { defineConfig, devices } from "@playwright/test";
+import currentsConfig from "./currents.config";
 
 export default defineConfig({
   testDir: "./tests",
@@ -12,6 +14,7 @@ export default defineConfig({
     ["list"],
     ["html", { open: "never" }],
     ["json", { outputFile: "test-results.json" }],
+    ...(process.env.CURRENTS_RECORD_KEY ? [currentsReporter(currentsConfig)] : []),
   ],
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3000",
